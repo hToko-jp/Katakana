@@ -1,29 +1,134 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>カタカナアプリ</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カタカナアプリ🌸</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 30px;
+      overflow: hidden;
+      background-color: #fdf7f9;
+    }
+
+    input, button {
+      font-size: 1.2em;
+      padding: 10px;
+      margin: 10px;
+    }
+
+    #result {
+      font-size: 1.5em;
+      margin: 20px;
+      height: 2em;
+    }
+
+    /* .petal {
+      position: fixed;
+      top: -20px;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      border-radius: 50%;
+      animation: fall linear;
+    } */
+
+    .firework {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  z-index: 9999;
+}
+
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>変換チャレンジ！</h1>
-    <p id="question">ひらがな: さくら</p>
-  
-    <input type="text" id="answer" placeholder="カタカナで答えてね">
-    <button onclick="checkAnswer()">答える</button>
-    <p id="result"></p>
-  
-    <script>
-      const correctAnswer = "サクラ";  // 正解（カタカナ）
-  
-      function checkAnswer() {
-        const userInput = document.getElementById("answer").value;
-        if (userInput === correctAnswer) {
-          document.getElementById("result").textContent = "正解！🎉";
-        } else {
-          document.getElementById("result").textContent = "ちがうよ〜💦";
-        }
+  <h1>変換チャレンジ！🌸</h1>
+  <p id="question">ひらがな:</p>
+  <input type="text" id="answer" placeholder="カタカナで答えてね">
+  <button onclick="checkAnswer()">答える</button>
+  <p id="result"></p>
+
+  <script>
+    const questions = [
+      { hiragana: "さくら", katakana: "サクラ" },
+      { hiragana: "やま", katakana: "ヤマ" },
+      { hiragana: "かわ", katakana: "カワ" },
+      { hiragana: "たけ", katakana: "タケ" }
+    ];
+
+    let currentIndex = 0;
+
+    function showQuestion() {
+      if (currentIndex < questions.length) {
+        document.getElementById("question").textContent = "ひらがな: " + questions[currentIndex].hiragana;
+        document.getElementById("answer").value = "";
+        document.getElementById("result").textContent = "";
+      } else {
+        document.getElementById("question").textContent = "すべての問題が終了しました！🌟";
+        document.getElementById("answer").style.display = "none";
+        document.querySelector("button").style.display = "none";
       }
-    </script>
+    }
+
+    function checkAnswer() {
+      const userInput = document.getElementById("answer").value.trim();
+      const correctAnswer = questions[currentIndex].katakana;
+
+      if (userInput === correctAnswer) {
+        document.getElementById("result").textContent = "正解！🎉";
+        const x = window.innerWidth / 2;
+        const y = window.innerHeight / 2;
+        createFirework(x, y);
+        currentIndex++;
+        setTimeout(showQuestion, 1500);
+      } else {
+        document.getElementById("result").textContent = "ちがうよ〜💦";
+      }
+    }
+
+    
+
+    function createFirework(x, y) {
+  const colors = ["red", "orange", "yellow", "fuchsia", "skyblue", "white"];
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement("div");
+    particle.className = "firework";
+    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.left = x + "px";
+    particle.style.top = y + "px";
+    document.body.appendChild(particle);
+
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = Math.random() * 100;
+
+    particle.animate([
+      { transform: "translate(0, 0)", opacity: 1 },
+      {
+        transform: `translate(${Math.cos(angle)*radius}px, ${Math.sin(angle)*radius}px)`,
+        opacity: 0
+      }
+    ], {
+      duration: 1000,
+      easing: "ease-out"
+    });
+
+    setTimeout(() => particle.remove(), 1000);
+  }
+}
+
+
+    showQuestion();
+  </script>
 </body>
 </html>
