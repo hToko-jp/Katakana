@@ -26,15 +26,27 @@
       height: 2em;
     }
 
-    /* .petal {
-      position: fixed;
-      top: -20px;
-      width: 20px;
-      height: 20px;
-      background-color: pink;
-      border-radius: 50%;
-      animation: fall linear;
-    } */
+    #question {
+      font-size: 2em;
+      margin: 20px;
+      height: 2em;
+      color: rgb(169, 154, 154);
+    }
+
+    #question,
+    #answer {
+      font-size: 2em;
+      margin: 20px;
+      height: 2em;
+    }
+    
+    #score {
+      font-size: 1.5em;
+      margin: 20px;
+      color: hotpink;
+    }
+
+    
 
     .firework {
   position: fixed;
@@ -74,7 +86,7 @@
 <body>
   <h1>みなみしょう カタカナ チャレンジ！🍰</h1>
   <p id="score">スコア：0点</p>
-  <p id="question">ひらがな:</p>
+  <p id="question"></p>
   <input type="text" id="answer" placeholder="かたかなで こたえてね">
   <button onclick="checkAnswer()">できたよ</button>
   <p id="result"></p>
@@ -97,7 +109,7 @@
 
     function showQuestion() {
       if (currentIndex < questions.length) {
-        document.getElementById("question").textContent = "ひらがな: " + questions[currentIndex].hiragana;
+        document.getElementById("question").textContent = "もんだい: " + questions[currentIndex].hiragana;
         document.getElementById("answer").value = "";
         document.getElementById("result").textContent = "";
       } else {
