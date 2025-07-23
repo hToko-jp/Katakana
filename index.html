@@ -88,7 +88,7 @@
   <h1>みなみしょう カタカナ チャレンジ！🍰</h1>
   <p id="score"></p>
   <p id="question"></p>
-  <input type="text" id="answer" placeholder="かたかなで こたえてね">
+  <input type="text" id="answer" placeholder="かたかなで かいてね！">
   <button onclick="checkAnswer()">できたよ</button>
   <p id="result"></p>
 
@@ -111,11 +111,11 @@
 
     function showQuestion() {
       if (currentIndex < questions.length) {
-        document.getElementById("question").textContent = "もんだい: " + questions[currentIndex].hiragana;
+        document.getElementById("question").textContent ="("+[currentIndex+1]+")    " +questions[currentIndex].hiragana;
         document.getElementById("answer").value = "";
         document.getElementById("result").textContent = "";
       } else {
-        document.getElementById("question").textContent = "これで おわりだよ！🌟";
+        document.getElementById("question").textContent = "おつかれさま！🌟";
         document.getElementById("answer").style.display = "none";
         document.querySelector("button").style.display = "none";
         document.getElementById("score").textContent = "";
