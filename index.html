@@ -38,6 +38,16 @@ span{
       padding-right: 250px;
     }
 
+    .ansBtn{
+        background-color: #df2a2a;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
     
     #answer {
       font-size: 2em;
@@ -54,11 +64,11 @@ span{
     
 
     .firework {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  z-index: 9999;
+     position: fixed;
+     width: 10px;
+     height: 10px;
+     border-radius: 50%;
+     z-index: 9999;
 }
 
 
@@ -88,12 +98,14 @@ span{
   }
   </style>
 </head>
+
+
 <body>
   <h1>かたかな ちゃれんじ！🍰<span>れべる１</span></h1>
   <p id="score"></p>
   <p id="question"></p>
   <input type="text" id="answer" placeholder="かたかなで かいてね！">
-  <button onclick="checkAnswer()">できたよ</button>
+  <button class="ansBtn" onclick="checkAnswer()">できたよ</button>
   <p id="result"></p>
 
 
