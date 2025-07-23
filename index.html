@@ -10,7 +10,8 @@
       text-align: center;
       padding: 30px;
       overflow: hidden;
-      background-color: #fdf7f9;
+      background-color: black;
+      color: white;
     }
 
     input, button {
@@ -48,8 +49,26 @@
       to {
         transform: translateY(100vh) rotate(360deg);
         opacity: 0;
-      }
+      }   
     }
+
+    @keyframes pop {
+     
+     0%   { opacity: 1; transform: scale(1.2); }
+     50%  { opacity: 0.6; transform: scale(1); }
+     100% { opacity: 0; transform: scale(0.9); }
+   }
+
+  #result.popEffect {
+    animation: pop 2.5s fadeOut 3.5 ease-out ;
+    /* animation: fadeOut 1.5s ease-out; */
+    font-size: 4em;
+    font-weight: bold;
+    color: hotpink;
+    text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.7);
+    transform: scale(1.2);
+    transition: transform 0.3s ease-out, color 0.3s ease-out;
+  }
   </style>
 </head>
 <body>
@@ -81,15 +100,27 @@
       }
     }
 
+    function launchFullFireworks() {
+    for (let i = 0; i < 30; i++) { // 5か所に発射（好きな数に増やせます）
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight * 0.5; // 上半分に表示すると花火っぽい！
+    createFirework(x, y);
+  }
+}
+
     function checkAnswer() {
       const userInput = document.getElementById("answer").value.trim();
       const correctAnswer = questions[currentIndex].katakana;
 
       if (userInput === correctAnswer) {
         document.getElementById("result").textContent = "正解！🎉";
-        const x = window.innerWidth / 2;
-        const y = window.innerHeight / 2;
-        createFirework(x, y);
+        const resultElem = document.getElementById("result");
+        resultElem.classList.add("popEffect");
+        
+        // アニメーションが終わったらクラスをはずす
+        // setTimeout(() => resultElem.classList.remove("popEffect"), 600);
+
+        launchFullFireworks(); // 🌟 全画面花火！
         currentIndex++;
         setTimeout(showQuestion, 1500);
       } else {
@@ -99,7 +130,7 @@
 
     
 
-    function createFirework(x, y) {
+  function createFirework(x, y) {
   const colors = ["red", "orange", "yellow", "fuchsia", "skyblue", "white"];
   for (let i = 0; i < 20; i++) {
     const particle = document.createElement("div");
@@ -113,17 +144,18 @@
     const radius = Math.random() * 100;
 
     particle.animate([
-      { transform: "translate(0, 0)", opacity: 1 },
+      { transform: "translate(0, 0)", opacity: 5 },
       {
         transform: `translate(${Math.cos(angle)*radius}px, ${Math.sin(angle)*radius}px)`,
         opacity: 0
       }
     ], {
-      duration: 1000,
+      duration: 1300,
       easing: "ease-out"
+      
     });
 
-    setTimeout(() => particle.remove(), 1000);
+    setTimeout(() => particle.remove(), 1100);
   }
 }
 
