@@ -6,6 +6,24 @@
     <title>カタカナアプリ</title>
 </head>
 <body>
-    
+    <h1>変換チャレンジ！</h1>
+    <p id="question">ひらがな: さくら</p>
+  
+    <input type="text" id="answer" placeholder="カタカナで答えてね">
+    <button onclick="checkAnswer()">答える</button>
+    <p id="result"></p>
+  
+    <script>
+      const correctAnswer = "サクラ";  // 正解（カタカナ）
+  
+      function checkAnswer() {
+        const userInput = document.getElementById("answer").value;
+        if (userInput === correctAnswer) {
+          document.getElementById("result").textContent = "正解！🎉";
+        } else {
+          document.getElementById("result").textContent = "ちがうよ〜💦";
+        }
+      }
+    </script>
 </body>
 </html>
