@@ -91,18 +91,22 @@
   <button onclick="checkAnswer()">できたよ</button>
   <p id="result"></p>
 
+
+  <p id="finalScore" style="font-size: 1.5em; font-weight: bold;"></p>
+
+
   <script>
     const questions = [
       { hiragana: "まいくら", katakana: "マイクラ" },
       { hiragana: "まりお", katakana: "マリオ" },
-      { hiragana: "ぽけもん", katakana: "ポケモン" },
-      { hiragana: "げーむ", katakana: "ゲーム" },
-      { hiragana: "あいすくりーむ", katakana: "アイスクリーム" },
-      { hiragana: "すいか", katakana: "スイカ" },
-      { hiragana: "たいやき", katakana: "タイヤキ" },
-      { hiragana: "おにぎり", katakana: "オニギリ" },
-      { hiragana: "さくらんぼ", katakana: "サクランボ" },
-      { hiragana: "すぷらとぅーん", katakana: "スプラトゥーン" }
+    //   { hiragana: "ぽけもん", katakana: "ポケモン" },
+    //   { hiragana: "げーむ", katakana: "ゲーム" },
+    //   { hiragana: "あいすくりーむ", katakana: "アイスクリーム" },
+    //   { hiragana: "すいか", katakana: "スイカ" },
+    //   { hiragana: "たいやき", katakana: "タイヤキ" },
+    //   { hiragana: "おにぎり", katakana: "オニギリ" },
+    //   { hiragana: "さくらんぼ", katakana: "サクランボ" },
+    //   { hiragana: "すぷらとぅーん", katakana: "スプラトゥーン" }
     ];
 
     let currentIndex = 0;
@@ -116,6 +120,11 @@
         document.getElementById("question").textContent = "これで おわりだよ！🌟";
         document.getElementById("answer").style.display = "none";
         document.querySelector("button").style.display = "none";
+        document.getElementById("result").textContent = `あなたの けっかは ${score}てん！`;
+        document.getElementById("score").textContent = "";
+
+        // 🎯 最終スコア表示
+    // document.getElementById("finalScore").textContent = `あなたのスコアは ${score}点です！`;
       }
     }
 
