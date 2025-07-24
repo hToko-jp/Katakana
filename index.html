@@ -125,6 +125,7 @@ span{
 
 
   <script>
+    // 問題
     const questions = [
       { hiragana: "まいくら", katakana: "マイクラ" },
       { hiragana: "まりお", katakana: "マリオ" },
@@ -140,34 +141,58 @@ span{
 
     let currentIndex = 0;
 
-    function showQuestion() {
-      if (currentIndex < questions.length) {
-        document.getElementById("question").textContent ="("+[currentIndex+1]+")    " +questions[currentIndex].hiragana;
-        document.getElementById("answer").value = "";
-        document.getElementById("result").textContent = "";
-      } else {
-        document.getElementById("question").textContent = "おつかれさま！🌟";
-        document.getElementById("answer").style.display = "none";
-        document.querySelector("button").style.display = "none";
-        document.getElementById("score").textContent = "";
-        document.getElementById("question").textContent = "これでおわりだよ🌟";
-        document.getElementById("answer").style.display = "none";
-        document.querySelector("button").style.display = "none";
-        document.getElementById("result").textContent = "おつかれさま！🎉";
-  const endTime = Date.now();
-  const timeTaken = Math.floor((endTime - startTime) / 1000);
+    function getRandomQuestionIndex() {
+  return Math.floor(Math.random() * questions.length);
+}
+    const usedQuestions = []; // 使用済みの問題を管理する配列
 
-  document.getElementById("result").textContent =
-    `クリアタイムは${timeTaken}秒`;
-      }
-    }
+    // クリアタイムの表示
+    let startTime = 0;
+    if (currentIndex === 0) {
+  startTime = Date.now();
+}
+const endTime = Date.now();
+const timeTaken = Math.floor((endTime - startTime) / 1000); // 秒単位
 
-    function launchFullFireworks() {
-    for (let i = 0; i < 30; i++) { // 5か所に発射（好きな数に増やせます）
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * window.innerHeight * 0.5; // 上半分に表示すると花火っぽい！
-    createFirework(x, y);
+//////// 問題を表示する関数///////////
+function showQuestion() {
+  if (usedQuestions.length === 0) {
+    // ゲーム開始時間を記録
+    startTime = Date.now(); 
   }
+
+  if (usedQuestions.length < questions.length) {
+    let randomIndex;
+    do {
+      randomIndex = getRandomQuestionIndex();
+    } while (usedQuestions.includes(randomIndex));
+
+    usedQuestions.push(randomIndex);
+    currentIndex = randomIndex;
+
+    document.getElementById("question").textContent = `(${usedQuestions.length}) ` + questions[currentIndex].hiragana;
+    document.getElementById("answer").value = "";
+    document.getElementById("result").textContent = "";
+  } else {
+    // ゲーム終了！
+    const endTime = Date.now();
+    const timeTaken = Math.floor((endTime - startTime) / 1000);
+
+    document.getElementById("question").textContent = "これでおわりだよ🌟";
+    document.getElementById("answer").style.display = "none";
+    document.querySelector("button").style.display = "none";
+    document.getElementById("score").textContent = "";
+    document.getElementById("result").textContent = `おつかれさま！🎉 クリアタイムは ${timeTaken}秒`;
+  }
+}
+
+
+       function launchFullFireworks() {
+       for (let i = 0; i < 30; i++) { // 5か所に発射（好きな数に増やせます）
+       const x = Math.random() * window.innerWidth;
+       const y = Math.random() * window.innerHeight * 0.5; // 上半分に表示すると花火っぽい！
+       createFirework(x, y);
+     }
 }
 
    
@@ -228,14 +253,7 @@ span{
 
     showQuestion();
 
-    // クリアタイムの表示
-    let startTime = 0;
-    if (currentIndex === 0) {
-  startTime = Date.now();
-}
-const endTime = Date.now();
-const timeTaken = Math.floor((endTime - startTime) / 1000); // 秒単位
-
+    
 
 
 
