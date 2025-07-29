@@ -96,32 +96,20 @@ span{
     transform: scale(1.2);
     transition: transform 0.3s ease-out, color 0.3s ease-out;
   }
-
-  /* レスポンシブル */
-  @media screen and (max-width: 768px) {
-    p{
-        background-color: black;
-         color:green;
-     }
- }
  
- @media screen and (max-width: 480px) {
-    p{
-        background-color: black;
-         color:red;
-     }
- }
   </style>
 </head>
 
 
 <body>
+  <div>
   <h1>かたかな ちゃれんじ！🍰<span>れべる１</span></h1>
   <p id="score"></p>
   <p id="question"></p>
   <input type="text" id="answer" placeholder="カタカナで かいてね！">
   <button class="ansBtn" onclick="checkAnswer()">できたよ</button>
   <p id="result"></p>
+ </div>
 
 
   <script>
@@ -129,14 +117,14 @@ span{
     const questions = [
       { hiragana: "まいくら", katakana: "マイクラ" },
       { hiragana: "まりお", katakana: "マリオ" },
-      // { hiragana: "ぽけもん", katakana: "ポケモン" },
-      // { hiragana: "げーむ", katakana: "ゲーム" },
-      // { hiragana: "あいすくりーむ", katakana: "アイスクリーム" },
-      // { hiragana: "すいか", katakana: "スイカ" },
-      // { hiragana: "ぼーと", katakana: "ボート" },
-      // { hiragana: "ぱそこん", katakana: "パソコン" },
-      // { hiragana: "さくらんぼ", katakana: "サクランボ" },
-      // { hiragana: "じぇっとこーすたー", katakana: "ジェットコースター" }
+      { hiragana: "ぽけもん", katakana: "ポケモン" },
+      { hiragana: "げーむ", katakana: "ゲーム" },
+      { hiragana: "あいすくりーむ", katakana: "アイスクリーム" },
+      { hiragana: "すいか", katakana: "スイカ" },
+      { hiragana: "ぼーと", katakana: "ボート" },
+      { hiragana: "ぱそこん", katakana: "パソコン" },
+      { hiragana: "さくらんぼ", katakana: "サクランボ" },
+      { hiragana: "じぇっとこーすたー", katakana: "ジェットコースター" }
     ];
 
     let currentIndex = 0;
@@ -183,10 +171,9 @@ function showQuestion() {
     document.querySelector("button").style.display = "none";
     document.getElementById("score").textContent = "";
     document.getElementById("result").innerHTML = `おつかれさま！🎉<span> <br>クリアタイムは ${timeTaken}秒</span>`;
+    
   }
 }
-
-
        function launchFullFireworks() {
        for (let i = 0; i < 30; i++) { // 5か所に発射（好きな数に増やせます）
        const x = Math.random() * window.innerWidth;
@@ -195,10 +182,9 @@ function showQuestion() {
      }
 }
 
-   
-    // ここからスコア管理
-
-  let score = 0; // スコア初期化
+// ユーザーの回答をチェックする関数
+// ここで、ユーザーが入力したカタカナと正解を比較
+ 
   function checkAnswer() {
   const userInput = document.getElementById("answer").value.trim();
   const correctAnswer = questions[currentIndex].katakana;
@@ -206,8 +192,8 @@ function showQuestion() {
   if (userInput === correctAnswer) {
     document.getElementById("result").textContent = "せいかい！🎉";
 
-    // 🎯 点数加算
-    score += 10;
+    // 花火のエフェクトを追加
+    const x = window.innerWidth / 2; // 画面中央に花火
     const resultElem = document.getElementById("result");
     resultElem.classList.add("popEffect");
 
@@ -252,12 +238,6 @@ function showQuestion() {
 }
 
     showQuestion();
-
-    
-
-
-
-
   </script>
 </body>
 </html>
