@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🍉カタカナアプリ🍓</title>
+  <title>🍉どうぶつ カタカナ🍓</title>
   <style>
     body {
       font-family: sans-serif;
@@ -96,14 +96,33 @@ span{
     transform: scale(1.2);
     transition: transform 0.3s ease-out, color 0.3s ease-out;
   }
- 
+  
+  /* 終了時の再スタートボタン */
+  #retryButton {
+  padding: 6px 16px;
+  font-size: 1rem;
+  background: linear-gradient(to right, #4CAF50, #2E7D32);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#retryButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
   </style>
 </head>
 
 
 <body>
   <div>
-  <h1>かたかな ちゃれんじ！🍰<span>れべる１</span></h1>
+  <h1>カタカナ どうぶつ ちゃれんじ！🍰<span>れべる１</span></h1>
   <p id="score"></p>
   <p id="question"></p>
   <input type="text" id="answer" placeholder="カタカナで かいてね！">
@@ -113,26 +132,114 @@ span{
 
 
   <script>
-    // 問題
-    const questions = [
-      { hiragana: "まいくら", katakana: "マイクラ" },
-      { hiragana: "まりお", katakana: "マリオ" },
-      { hiragana: "ぽけもん", katakana: "ポケモン" },
-      { hiragana: "げーむ", katakana: "ゲーム" },
-      { hiragana: "あいすくりーむ", katakana: "アイスクリーム" },
-      { hiragana: "すいか", katakana: "スイカ" },
-      { hiragana: "ぼーと", katakana: "ボート" },
-      { hiragana: "ぱそこん", katakana: "パソコン" },
-      { hiragana: "さくらんぼ", katakana: "サクランボ" },
-      { hiragana: "じぇっとこーすたー", katakana: "ジェットコースター" }
-    ];
+// レベル別の問題
+const levels = {
+  1: [
+  { hiragana: "しか", katakana: "シカ" },
+  { hiragana: "ねこ", katakana: "ネコ" },
+  { hiragana: "いのしし", katakana: "イノシシ" },
+  { hiragana: "らいおん", katakana: "ライオン" },
+  { hiragana: "からす", katakana: "カラス" },
+    // … more questions
+  ],
+  2: [
+  { hiragana: "かば", katakana: "カバ" },
+  { hiragana: "ぞう", katakana: "ゾウ" },
+  { hiragana: "やぎ", katakana: "ヤギ" },
+  { hiragana: "ぱんだ", katakana: "パンダ" },
+  { hiragana: "ぺんぎん", katakana: "ペンギン" },
+      
+    // … harder questions
+  ],
+  3: [
+  { hiragana: "かんがるー", katakana: "カンガルー" },
+  { hiragana: "ふらみんご", katakana: "フラミンゴ" },
+  { hiragana: "くじゃく", katakana: "クジャク" },
+  { hiragana: "まっこうくじら", katakana: "マッコウクジラ" },
+  { hiragana: "いそぎんちゃく", katakana: "イソギンチャク" },
+      
+    // … harder questions
+  ],
+};
 
-    let currentIndex = 0;
+// ページ読み込み時に前回のレベルを取得してスタート
+document.addEventListener("DOMContentLoaded", () => {
+  localStorage.removeItem('currentLevel'); // 前回のデータを消す！
+  loadLevel(1); // れべる1からスタート！
+});
 
+// 現在のレベル管理
+let currentIndex = 0;
+let questions = [];
+let currentLevel = 1;
+
+
+function loadLevel(level) {
+  currentLevel = level;
+  questions = levels[level];
+  usedQuestions = [];                  // ⬅︎ そして、安全にusedQuestionsをリセット！
+  currentIndex = 0;
+  // console.log(questions)
+
+  document.querySelector("h1 span").textContent = `れべる${level}`;
+  document.getElementById("answer").style.display = "inline";
+  document.querySelector("button").style.display = "inline";
+
+  showQuestion();
+  setTimeout(() => {
+  document.getElementById("answer").focus();
+}, 100);
+
+}
+
+
+// ゲームクリアの演出
+function showGameComplete() {
+  const result = document.getElementById("result");
+  result.innerHTML = `
+    🎉 ぜんぶ クリアしたよ すばらしい! 🌈<br>
+    <button onclick="restartGame()" id="retryButton">もういちど やってみる</button>
+  `;
+
+  document.getElementById("question").textContent = "";
+  document.getElementById("answer").style.display = "none";
+  document.querySelector("button").style.display = "none";
+
+  launchFullFireworks(); // 祝福の花火 🎆
+}
+
+// リスタート機能
+function restartGame() {
+  localStorage.setItem('currentLevel', 1); // れべる1にもどす
+  loadLevel(1); // すぐスタート！
+}
+
+function showLevelUpAnimation(level) {
+  const result = document.getElementById("result");
+  result.innerHTML = `✨やったー！<span style="color: red;">レベル${level}</span>へ しんか✨`;
+  result.classList.add("popEffect");
+}
+
+
+// レベル切り替え関数
+function moveToNextLevel() {
+  if (currentLevel < Object.keys(levels).length) {
+    const nextLevel = currentLevel + 1;
+    localStorage.setItem('currentLevel', nextLevel);
+    showLevelUpAnimation(nextLevel);
+    setTimeout(() => {
+      loadLevel(nextLevel);
+    }, 1500);
+  } else {
+    showGameComplete();
+  }
+}
+
+   
     function getRandomQuestionIndex() {
   return Math.floor(Math.random() * questions.length);
 }
-    const usedQuestions = []; // 使用済みの問題を管理する配列
+    let usedQuestions = []; // 使用済みの問題を管理する配列
 
     // クリアタイムの表示
     let startTime = 0;
@@ -166,12 +273,13 @@ function showQuestion() {
     const endTime = Date.now();
     const timeTaken = Math.floor((endTime - startTime) / 1000);
 
-    document.getElementById("question").textContent = "これでおわりだよ🌟";
+    document.getElementById("question").innerHTML = `レベル<span style color="red">${currentLevel}</span>はおわりだよ🌟`;
+    
     document.getElementById("answer").style.display = "none";
     document.querySelector("button").style.display = "none";
     document.getElementById("score").textContent = "";
     document.getElementById("result").innerHTML = `おつかれさま！🎉<span> <br>クリアタイムは ${timeTaken}秒</span>`;
-    
+    moveToNextLevel();
   }
 }
        function launchFullFireworks() {
@@ -237,7 +345,15 @@ function showQuestion() {
   }
 }
 
-    showQuestion();
+    
+// キーボードのEnterキーで回答を送信
+    document.getElementById("answer").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    checkAnswer();
+  }
+});
+
+   
   </script>
 </body>
 </html>
